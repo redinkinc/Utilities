@@ -3,12 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilitiesUI", "Utilities\UtilitiesUI.csproj", "{0A4B4EEA-8FAB-4AC8-90D4-27DBC5B0CF2A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FFB1A0C9-0754-4028-BB30-6F7F15F56E5B} = {FFB1A0C9-0754-4028-BB30-6F7F15F56E5B}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilitiesUI", "UtilitiesUI\UtilitiesUI.csproj", "{0A4B4EEA-8FAB-4AC8-90D4-27DBC5B0CF2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "UtilityData\Utilities.csproj", "{FFB1A0C9-0754-4028-BB30-6F7F15F56E5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{FFB1A0C9-0754-4028-BB30-6F7F15F56E5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

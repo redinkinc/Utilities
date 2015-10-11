@@ -131,13 +131,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UtilityData\Utilities.csproj">
-      <Project>{ffb1a0c9-0754-4028-bb30-6f7f15f56e5b}</Project>
-      <Name>Utilities</Name>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
