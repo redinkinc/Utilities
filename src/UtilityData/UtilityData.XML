@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UtilityData</name>
+    </assembly>
+    <members>
+        <member name="T:Utilities.ParallelCoordinateData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Utilities.ParallelCoordinateData.ParameterList">
+            <summary>
+            Parameter names
+            </summary>
+        </member>
+        <member name="P:Utilities.ParallelCoordinateData.ParamValues">
+            <summary>
+            Values of the parameters.
+            </summary>
+        </member>
+        <member name="M:Utilities.ParallelCoordinateData.InitParallelCoordinateData(System.Collections.Generic.List{System.String})">
+            <summary>
+            Initilaize the Data for Utilities.ParallelCoordinates.
+            </summary>
+            <param name="parameterList">List of the names of the parameter.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Utilities.ParallelCoordinateData.AddValues(System.Collections.Generic.List{System.Double})">
+            <summary>
+            Adds values to the parallelCoordinateData
+            </summary>
+            <param name="paramValues">List of Values to be added.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
