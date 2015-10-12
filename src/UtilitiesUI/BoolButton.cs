@@ -38,6 +38,7 @@ namespace Utilities
     [NodeCategory("Utilities")]
     [NodeDescription("BoolButtonDescription", typeof(Resources))]
     [IsDesignScriptCompatible]
+    [IsVisibleInDynamoLibrary(false)]
     public class BoolButton : NodeModel
     {
         #region private members
