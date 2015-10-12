@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Xml;
 using Autodesk.DesignScript.Runtime;
@@ -42,10 +43,19 @@ namespace Utilities
     [IsDesignScriptCompatible]
     public class ParallelCoordinates : NodeModel
     {
+        #region private members
+
         private int _plotColor;
 
         private List<string> _parameterNames;
         private List<List<double>> _values;
+
+        #endregion
+
+        #region public members
+
+        public List<double> MaxValues { get; set; }
+        public List<double> MinValues { get; set; }
 
         public List<string> ParameterNames
         {
@@ -78,6 +88,10 @@ namespace Utilities
             RequestChangeParallelCoordinates?.Invoke(sender, e);
         }
 
+        #endregion
+
+        #region constructor
+
         public ParallelCoordinates()
         {
             // When you create a UI node, you need to do the
@@ -106,7 +120,15 @@ namespace Utilities
             _parameterNames = new List<string>();
             _values = new List<List<double>>();
             _plotColor = new int();
+
+            MaxValues = new List<double>();
+            MinValues = new List<double>();
+            
         }
+
+        #endregion
+
+        #region member functions
 
         private void ParallelCoordinates_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -137,6 +159,48 @@ namespace Utilities
             //_values = helper.ReadString("values").Split(","); //read in string to List<List<double>>
         }
 
+        public void AddValues(List<double> values)
+        {
+            if (values.Count != ParameterNames.Count)
+            {
+                throw new ArgumentException("List length does not fit the number of parameters");
+            }
+
+            Values.Add(values);
+
+            if (MaxValues.Count == 0)
+            {
+                MaxValues = values;
+            }
+            else
+            {
+                for (var i = 0; i < values.Count; i++)
+                {
+                    if (values[i] > MaxValues[i])
+                    {
+                        MaxValues[i] = values[i];
+                    }
+
+                }
+            }
+            if (MinValues.Count == 0)
+            {
+                MinValues = values;
+            }
+            else
+            {
+                for (var i = 0; i < values.Count; i++)
+                {
+                    if (values[i] < MinValues[i])
+                    {
+                        MinValues[i] = values[i];
+                    }
+
+                }
+            }
+        }
+        
+
         public new void Updated()
         {
             OnNodeModified();
@@ -144,7 +208,9 @@ namespace Utilities
 
         public void Reset()
         {
-            _values.Clear();
+            Values.Clear();
+            MinValues.Clear();
+            MaxValues.Clear();
         }
 
         /// <summary>
@@ -168,6 +234,8 @@ namespace Utilities
                 //    AstFactory.BuildPrimitiveNodeFromObject(Values))
             };
         }
+
+        #endregion
 
     }
 
@@ -237,7 +305,7 @@ namespace Utilities
                         model.ParameterNames.Add(p);
                     }
 
-                    model.Values.Add(start);
+                    model.AddValues(start);
                     parallelCoordinatesControl.AddChart();
                 });
             };
