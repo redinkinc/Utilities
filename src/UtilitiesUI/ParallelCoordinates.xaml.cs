@@ -20,11 +20,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Utilities. If not, see <http://www.gnu.org/licenses/>.
  */
- 
-using System.Linq;
-using System.Reflection;
+
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -43,16 +40,15 @@ namespace Utilities
 
         public ParallelCoordinates Model { get; set; }
         public SolidColorBrush PlotColor { get; set; }
+        public string PlotColorName { get; set; }
         public int CoordinateDistance { get; set; }
-        public int NumOfCoordinates { get; set; }
 
         public ParallelCoordinatesControl(ParallelCoordinates model)
         {
             InitializeComponent();
             Model = model;
-            PlotColor = new SolidColorBrush() { Color = Color.FromArgb(255, 0, 0, 0) };
-            PlotColorBox.ItemsSource = typeof(Colors).GetProperties();
-            PlotColorBox.SelectedItem = typeof(Colors).GetProperty("Black");
+            PlotColor = new SolidColorBrush() { Color = Color.FromArgb(255, 0, 0, 255) };
+            PlotColorName = "Blue";
             CoordinateDistance = 30;
         }
 
@@ -71,19 +67,11 @@ namespace Utilities
         private void DrawPlot()
         {
             
-            if ( Model.ParameterNames.Count == 0 )
-            {
-                for (var i = 0; i < Model.Values[1].Count; i++)
-                {
-                    Model.ParameterNames.Add("default" + i);
-                }
-            }
-
-            NumOfCoordinates = Model.ParameterNames.Count;
-            CanvasWidth = CoordinateDistance*(NumOfCoordinates-1);
+            var numOfCoordinates = Model.ParameterNames.Count;
+            CanvasWidth = CoordinateDistance*(numOfCoordinates-1);
             PlotCanvas.Width = CanvasWidth;
             
-            for (var i = 0; i < NumOfCoordinates; i++)
+            for (var i = 0; i < numOfCoordinates; i++)
             {
                 var pl = new Polyline() {Stroke = Brushes.Black};
                 pl.Points.Add(new Point(i * CoordinateDistance, 300));
@@ -95,25 +83,23 @@ namespace Utilities
             {
                 _pl = new Polyline { Stroke = PlotColor };
 
-                for (var i = 0; i < NumOfCoordinates; i++)
+                for (var i = 0; i < numOfCoordinates; i++)
                 {
-                    _pl.Points.Add(new Point(i * CoordinateDistance, 0.5 * PlotCanvas.ActualHeight));
+                    _pl.Points.Add(new Point(i * CoordinateDistance, 0.5 * PlotCanvas.Height));
                 }
             }
             else
             {
+
                 foreach (var value in Model.Values)
                 {
                     _pl = new Polyline {Stroke = PlotColor};
 
-                    var maxValue = value.Max();
-                    var minValue = value.Min();
-
-                    for (var i = 0; i < NumOfCoordinates; i++)
+                    for (var i = 0; i < numOfCoordinates; i++)
                     {
                         double x = i*CoordinateDistance;
                         var y = value[i];
-                        _pl.Points.Add(ScaledCurvePoint(x, y, minValue, maxValue));
+                        _pl.Points.Add(ScaledCurvePoint(x, y, Model.MinValues[i], Model.MaxValues[i]));
                     }
 
                     PlotCanvas.Children.Add(_pl);
@@ -131,17 +117,18 @@ namespace Utilities
             return scaledPoint;
         }
 
-        private void PlotColorBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var propertyInfo = PlotColorBox.SelectedItem as PropertyInfo;
-            if (propertyInfo == null) return;
-            var myColor = (Color)propertyInfo.GetValue(null, null);
-            PlotColor = new SolidColorBrush(myColor);
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void ResetButton_OnClick_OnClick(object sender, RoutedEventArgs e)
         {
             this.Reset();
+        }
+
+        private void ParallelCoordinateSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            var settingsWindow = new Window { Content = new PCsettings(this) };
+            settingsWindow.Height = 200;
+            settingsWindow.Width = 200;
+            settingsWindow.WindowStyle = WindowStyle.None;
+            settingsWindow.Show();
         }
     }
 }

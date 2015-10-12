@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Utilities.PCsettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="150">
+
+    <StackPanel>
+        <!--<Border
+        Name="headerBorder" 
+        Width="Auto" 
+        Height="50" 
+        VerticalAlignment="Top"
+        DockPanel.Dock="Top" 
+        BorderThickness="1,1,1,1">
+            <Grid>
+                <Thumb 
+                x:Name="headerThumb" 
+                Opacity="0" 
+                Background="{x:Null}" 
+                Foreground="{x:Null}" 
+                DragDelta="headerThumb_DragDelta"/>
+            </Grid>
+        </Border>-->
+        <TextBlock Margin="10 0">PlotColor:</TextBlock>
+        <WrapPanel>
+            <ComboBox Name="PlotColorBox" SelectionChanged="PlotColorBox_OnSelectionChanged" Margin="10" Width="130">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </WrapPanel>
+        <Button Name="SaveButton" Margin="10" Click="SaveButton_OnClick">Save</Button>
+    </StackPanel>
+</UserControl>

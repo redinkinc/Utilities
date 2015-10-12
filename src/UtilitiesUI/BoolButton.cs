@@ -24,12 +24,10 @@
  using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Xml;
-using Autodesk.DesignScript.Runtime;
+ using Autodesk.DesignScript.Runtime;
 using Dynamo.Controls;
 using Dynamo.Models;
-using Dynamo.Utilities;
-using Dynamo.Wpf;
+ using Dynamo.Wpf;
 using ProtoCore.AST.AssociativeAST;
 using Utilities.Properties;
 

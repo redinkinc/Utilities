@@ -5,27 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-<StackPanel>
+    <StackPanel>
     <Viewbox Stretch="Fill">
         <Border>
             <Canvas Background="#e5e3df"  Name="PlotCanvas" Width="250" Height="200" ClipToBounds="True"/>
         </Border>
     </Viewbox>
-    <WrapPanel>
-        <ComboBox Name="CanvasType" SelectionChanged="CanvasType_OnSelectionChanged" Margin="10" Width="120">
-            <ComboBoxItem IsSelected="True">Plot</ComboBoxItem>
-            <ComboBoxItem>Histogram</ComboBoxItem>
-        </ComboBox>
-        <ComboBox Name="PlotColorBox" SelectionChanged="PlotColorBox_OnSelectionChanged" Margin="10" Width="120">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
+    <WrapPanel HorizontalAlignment="Stretch">
+            <ComboBox Name="CanvasType" SelectionChanged="CanvasType_OnSelectionChanged" Margin="10" Width="120">
+                <ComboBoxItem IsSelected="True">Plot</ComboBoxItem>
+                <ComboBoxItem>Histogram</ComboBoxItem>
             </ComboBox>
+            <Button Name="Watch2Dsettings" Margin="10" Width="20" Click="Watch2Dsettings_OnClick">*</Button>
         </WrapPanel>
     </StackPanel>
 </UserControl>

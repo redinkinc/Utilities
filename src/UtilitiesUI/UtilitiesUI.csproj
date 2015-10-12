@@ -72,10 +72,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParallelCoordinatesFromData.cs" />
-    <Compile Include="ParallelCoordinatesFromData.xaml.cs">
-      <DependentUpon>ParallelCoordinatesFromData.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ParallelCoordinates.cs" />
     <Compile Include="DropdownControl.xaml.cs">
       <DependentUpon>DropdownControl.xaml</DependentUpon>
@@ -86,6 +82,9 @@
     <Compile Include="BoolButton.cs" />
     <Compile Include="BoolButtonControl.xaml.cs">
       <DependentUpon>BoolButtonControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PCsettings.xaml.cs">
+      <DependentUpon>PCsettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Watch2dControl.xaml.cs">
       <DependentUpon>Watch2dControl.xaml</DependentUpon>
@@ -103,13 +102,12 @@
     </Compile>
     <Compile Include="Watch2D.cs" />
     <Compile Include="Dropdown.cs" />
+    <Compile Include="Watch2Dsettings.xaml.cs">
+      <DependentUpon>Watch2Dsettings.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="DropdownControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ParallelCoordinatesFromData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -121,7 +119,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PCsettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Watch2dControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Watch2Dsettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,12 +141,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{ffb1a0c9-0754-4028-bb30-6f7f15f56e5b}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

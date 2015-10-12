@@ -12,19 +12,8 @@
             </Border>
         </Viewbox>
         <WrapPanel>
-            <ComboBox Name="PlotColorBox" SelectionChanged="PlotColorBox_OnSelectionChanged" Margin="10" Width="120">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </WrapPanel>
-        <WrapPanel>
-            <Button Margin="10" Width="120" Click="ButtonBase_OnClick">Reset!</Button>
+            <Button Name="ResetButton" Margin="10" Width="120" Click="ResetButton_OnClick_OnClick">Reset!</Button>
+            <Button Name="ParallelCoordinateSettings" Margin="10" Width="20" Click="ParallelCoordinateSettings_OnClick" >*</Button>
         </WrapPanel>
     </StackPanel>
 </UserControl>

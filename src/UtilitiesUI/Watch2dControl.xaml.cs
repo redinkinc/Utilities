@@ -23,7 +23,6 @@
  
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -46,6 +45,7 @@ namespace Utilities
         private static SolidColorBrush _bgrColorBrush = new SolidColorBrush() { Color = Color.FromArgb(255,229,227,223) };
 
         public SolidColorBrush PlotColor { get; set; }
+        public string PlotColorName { get; set; }
         public List<double> Values { get; set; }
         public int SelectedType { get; set; }
 
@@ -55,8 +55,7 @@ namespace Utilities
             _watch2D = model;
             Values = new List<double>();
             PlotColor = new SolidColorBrush() { Color = Color.FromArgb(255, 0, 0, 0) };
-            PlotColorBox.ItemsSource = typeof (Colors).GetProperties();
-            PlotColorBox.SelectedItem = typeof (Colors).GetProperty("Black");
+            PlotColorName = "Black";
         }
 
         public void AddChart()
@@ -127,31 +126,29 @@ namespace Utilities
         {
             var result = new Point
             {
-                X = (pt.X - xmin) * PlotCanvas.Width / (_xmax - xmin),
-                Y = PlotCanvas.Height - (pt.Y - ymin) * PlotCanvas.Height
-                    / (_ymax - ymin)
+                X = (pt.X - xmin)*PlotCanvas.Width/(_xmax - xmin),
+                Y = PlotCanvas.Height - (pt.Y - ymin)*PlotCanvas.Height
+                    /(_ymax - ymin)
             };
             return result;
         }
-
         private void CanvasType_OnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
             SelectedType = CanvasType.SelectedIndex;
-            //_watch2d.Updated();
-            //update Chart();
         }
 
-        private void PlotColorBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Watch2Dsettings_OnClick(object sender, RoutedEventArgs e)
         {
-            var propertyInfo = PlotColorBox.SelectedItem as PropertyInfo;
-            if (propertyInfo != null)
+            var settingsWindow = new Window
             {
-                Color myColor = (Color)propertyInfo.GetValue(null, null);
-                PlotColor = new SolidColorBrush(myColor);
-            }
-            //_watch2d.Updated();
-            //update Chart
+                Content = new Watch2Dsettings(this),
+                Width = 200,
+                Height = 200,
+                WindowStyle = WindowStyle.None
+            };
+            settingsWindow.Show();
         }
+
     }
 
 }

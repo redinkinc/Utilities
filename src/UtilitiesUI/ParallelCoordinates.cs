@@ -24,7 +24,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Xml;
 using Autodesk.DesignScript.Runtime;
@@ -120,9 +119,6 @@ namespace Utilities
             _parameterNames = new List<string>();
             _values = new List<List<double>>();
             _plotColor = new int();
-
-            MaxValues = new List<double>();
-            MinValues = new List<double>();
             
         }
 
@@ -168,9 +164,9 @@ namespace Utilities
 
             Values.Add(values);
 
-            if (MaxValues.Count == 0)
+            if (MaxValues == null)
             {
-                MaxValues = values;
+                MaxValues =new List<double>(values);
             }
             else
             {
@@ -183,9 +179,9 @@ namespace Utilities
 
                 }
             }
-            if (MinValues.Count == 0)
+            if (MinValues == null)
             {
-                MinValues = values;
+                MinValues = new List<double>(values);
             }
             else
             {
@@ -209,8 +205,8 @@ namespace Utilities
         public void Reset()
         {
             Values.Clear();
-            MinValues.Clear();
-            MaxValues.Clear();
+            MinValues = null;
+            MaxValues = null;
         }
 
         /// <summary>
