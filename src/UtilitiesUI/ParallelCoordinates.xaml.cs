@@ -43,7 +43,7 @@ namespace Utilities
 
         public ParallelCoordinates Model { get; set; }
         public SolidColorBrush PlotColor { get; set; }
-  
+        public int CoordinateDistance { get; set; }
         public int NumOfCoordinates { get; set; }
 
         public ParallelCoordinatesControl(ParallelCoordinates model)
@@ -53,18 +53,25 @@ namespace Utilities
             PlotColor = new SolidColorBrush() { Color = Color.FromArgb(255, 0, 0, 0) };
             PlotColorBox.ItemsSource = typeof(Colors).GetProperties();
             PlotColorBox.SelectedItem = typeof(Colors).GetProperty("Black");
+            CoordinateDistance = 30;
         }
 
-        public void AddChart(ParallelCoordinateData pcData)
+        public void AddChart()
         {
             PlotCanvas.Children.Clear();
-            DrawPlot(pcData);
+            DrawPlot();
         }
 
-        private void DrawPlot(ParallelCoordinateData pcData)
+        public void Reset()
+        {
+            PlotCanvas.Children.Clear();
+            Model.Reset();
+        }
+
+        private void DrawPlot()
         {
             
-            if ( pcData.ParameterList.Count == 0 )
+            if ( Model.ParameterNames.Count == 0 )
             {
                 for (var i = 0; i < Model.Values[1].Count; i++)
                 {
@@ -73,13 +80,14 @@ namespace Utilities
             }
 
             NumOfCoordinates = Model.ParameterNames.Count;
-            CanvasWidth = 30*NumOfCoordinates;
+            CanvasWidth = CoordinateDistance*(NumOfCoordinates-1);
+            PlotCanvas.Width = CanvasWidth;
             
             for (var i = 0; i < NumOfCoordinates; i++)
             {
                 var pl = new Polyline() {Stroke = Brushes.Black};
-                pl.Points.Add(new Point(i * 30, 300));
-                pl.Points.Add(new Point(i * 30, 0));
+                pl.Points.Add(new Point(i * CoordinateDistance, 300));
+                pl.Points.Add(new Point(i * CoordinateDistance, 0));
                 PlotCanvas.Children.Add(pl);
             }
 
@@ -89,7 +97,7 @@ namespace Utilities
 
                 for (var i = 0; i < NumOfCoordinates; i++)
                 {
-                    _pl.Points.Add(new Point(i * 30, 0.5 * PlotCanvas.ActualHeight));
+                    _pl.Points.Add(new Point(i * CoordinateDistance, 0.5 * PlotCanvas.ActualHeight));
                 }
             }
             else
@@ -103,7 +111,7 @@ namespace Utilities
 
                     for (var i = 0; i < NumOfCoordinates; i++)
                     {
-                        double x = i*30;
+                        double x = i*CoordinateDistance;
                         var y = value[i];
                         _pl.Points.Add(ScaledCurvePoint(x, y, minValue, maxValue));
                     }
@@ -129,6 +137,11 @@ namespace Utilities
             if (propertyInfo == null) return;
             var myColor = (Color)propertyInfo.GetValue(null, null);
             PlotColor = new SolidColorBrush(myColor);
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Reset();
         }
     }
 }

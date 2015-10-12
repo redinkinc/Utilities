@@ -136,7 +136,7 @@
     <value>the selected item.</value>
   </data>
   <data name="ParallelCoordinatesDescription" xml:space="preserve">
-    <value>Takes a list of doubles and displays them as ParallelCoordinates.</value>
+    <value>Takes a list of doubles and displays them as ParallelCoordinatesFromData.</value>
   </data>
   <data name="ParallelCoordinatesPortDataInputToolTip" xml:space="preserve">
     <value>Input a list</value>

@@ -8,7 +8,7 @@
     <StackPanel>
         <Viewbox Stretch="Fill">
             <Border>
-                <Canvas Background="#e5e3df"  Name="PlotCanvas" Width="250" Height="200" ClipToBounds="True"/>
+                <Canvas Background="#e5e3df"  Name="PlotCanvas" Height="200" ClipToBounds="True"/>
             </Border>
         </Viewbox>
         <WrapPanel>
@@ -22,6 +22,9 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+        </WrapPanel>
+        <WrapPanel>
+            <Button Margin="10" Width="120" Click="ButtonBase_OnClick">Reset!</Button>
         </WrapPanel>
     </StackPanel>
 </UserControl>

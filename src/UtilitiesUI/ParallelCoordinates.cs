@@ -85,11 +85,12 @@ namespace Utilities
             // you can populate the InPortData and the OutPortData
             // collections with PortData objects describing your ports.
             InPortData.Add(new PortData("", Resources.ParallelCoordinatesPortDataInputToolTip));
-            //InPortData.Add(new PortData("", Resources.ParallelCoordinatesPortDataInputToolTip));
+            InPortData.Add(new PortData("", Resources.ParallelCoordinatesPortDataInputToolTip));
 
             // Nodes can have an arbitrary number of inputs and outputs.
             // If you want more ports, just create more PortData objects.
             OutPortData.Add(new PortData("", Resources.ParallelCoordinatesPortDataOutputToolTip));
+            //OutPortData.Add(new PortData("", Resources.ParallelCoordinatesPortDataOutputToolTip));
 
             // This call is required to ensure that your ports are
             // properly created.
@@ -161,7 +162,10 @@ namespace Utilities
             {
                 AstFactory.BuildAssignment(
                         GetAstIdentifierForOutputIndex(0), 
-                        AstFactory.BuildExprList(inputAstNodes))
+                        AstFactory.BuildExprList(inputAstNodes)) //,
+                //AstFactory.BuildAssignment(
+                //    GetAstIdentifierForOutputIndex(1),
+                //    AstFactory.BuildPrimitiveNodeFromObject(Values))
             };
         }
 
@@ -196,39 +200,45 @@ namespace Utilities
                 {
                     var paramValueNode = model.InPorts[0].Connectors[0].Start.Owner;
                     var paramValueIndex = model.InPorts[0].Connectors[0].Start.Index;
-                    //var xValueNode = model.InPorts[1].Connectors[0].Start.Owner;
-                    //var xValueIndex = model.InPorts[1].Connectors[0].Start.Index;
+                    var xValueNode = model.InPorts[1].Connectors[0].Start.Owner;
+                    var xValueIndex = model.InPorts[1].Connectors[0].Start.Index;
 
                     var paramValueId = paramValueNode.GetAstIdentifierForOutputIndex(paramValueIndex).Name;
-                    //var xValueId = xValueNode.GetAstIdentifierForOutputIndex(xValueIndex).Name;
+                    var xValueId = xValueNode.GetAstIdentifierForOutputIndex(xValueIndex).Name;
 
                     var paramMirror = dm.EngineController.GetMirror(paramValueId);
-                    //var startMirror = dm.EngineController.GetMirror(xValueId);
+                    var startMirror = dm.EngineController.GetMirror(xValueId);
 
-                    ParallelCoordinateData pcData;
+                    var param = new List<string>();
+                    var start = new List<double>();
 
-                    //if (paramMirror.GetData().IsCollection)
-                    //{
-                    //    pcData = paramMirror.GetData().GetElements().Select(data => data.Data);
-                    //}
-                    //else
-                    //{
-                        pcData = (ParallelCoordinateData) paramMirror.GetData().Data;
-                    //}
+                    if (paramMirror.GetData().IsCollection)
+                    {
+                        param.AddRange(paramMirror.GetData().GetElements().Select(data => (string) data.Data));
+                    }
+                    else
+                    {
+                        param.Add( (string) paramMirror.GetData().Data);
+                    }
 
-                    //if (startMirror.GetData().IsCollection)
-                    //{
-                    //    start.AddRange(startMirror.GetData().GetElements().Select(data => (double)data.Data));
-                    //}
-                    //else
-                    //{
-                    //    //var test = paramMirror.GetData().Data;
-                    //    start.Add( (double) startMirror.GetData().Data );
-                    //}
+                    if (startMirror.GetData().IsCollection)
+                    {
+                        start.AddRange(startMirror.GetData().GetElements().Select(data => (double)data.Data));
+                    }
+                    else
+                    {
+                        var test = paramMirror.GetData().Data;
+                        start.Add( (double) startMirror.GetData().Data );
+                    }
                     
-                    //model.ParameterNames = parameters;
-                    //model.Values.Add(start);
-                    parallelCoordinatesControl.AddChart(pcData);
+                    model.ParameterNames.Clear();
+                    foreach (var p in param)
+                    {
+                        model.ParameterNames.Add(p);
+                    }
+
+                    model.Values.Add(start);
+                    parallelCoordinatesControl.AddChart();
                 });
             };
         }

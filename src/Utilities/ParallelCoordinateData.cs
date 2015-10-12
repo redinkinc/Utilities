@@ -22,12 +22,14 @@
  */
 
 using System.Collections.Generic;
+using Autodesk.DesignScript.Runtime;
 
 namespace Utilities
 {
     /// <summary>
     /// 
     /// </summary>
+    [IsVisibleInDynamoLibrary(true)]
     public class ParallelCoordinateData
     {
         #region private members

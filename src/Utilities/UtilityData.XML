@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>UtilityData</name>
+        <name>Utilities</name>
     </assembly>
     <members>
         <member name="T:Utilities.ParallelCoordinateData">

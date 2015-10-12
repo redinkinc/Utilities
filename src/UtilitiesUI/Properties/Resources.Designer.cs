@@ -133,7 +133,7 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Takes a list of doubles and diyplays them as ParallelCoordinates.
+        ///   Looks up a localized string similar to Takes a list of doubles and diyplays them as ParallelCoordinatesFromData.
         /// </summary>
         internal static string ParallelCoordinatesDescription {
             get {
