@@ -33,8 +33,8 @@ namespace Utilities
 
         public DropdownControl(Dropdown dropdown)
         {
-            _dropdown = dropdown;
             InitializeComponent();
+            _dropdown = dropdown;
         }
 
         public void AddItems(ICollection collection)

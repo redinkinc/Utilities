@@ -50,7 +50,7 @@ namespace Utilities
         private int _index;
         private ObservableCollection<DynamoDropDownItem> _items = new ObservableCollection<DynamoDropDownItem>();
         public event EventHandler RequestChangeDropdown;
-        public int tempIndex;
+        public int TempIndex;
 
         #endregion
 
@@ -86,8 +86,7 @@ namespace Utilities
 
         protected virtual void OnRequestChangeDropdown(object sender, EventArgs e)
         {
-            if (RequestChangeDropdown != null)
-                RequestChangeDropdown(sender, e);
+            RequestChangeDropdown?.Invoke(sender, e);
         }
 
         private void Dropdown_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -126,7 +125,7 @@ namespace Utilities
             ArgumentLacing = LacingStrategy.Disabled;
 
             // removes preview button in the lower right corner of the node.
-            ShouldDisplayPreviewCore = false;
+            // ShouldDisplayPreviewCore = false;
             
             this.PropertyChanged += Dropdown_PropertyChanged;
 
@@ -150,7 +149,7 @@ namespace Utilities
             base.DeserializeCore(element, context);
 
             var helper = new XmlElementHelper(element);
-            tempIndex = helper.ReadInteger("selectedIndex", 0);
+            TempIndex = helper.ReadInteger("selectedIndex", 0);
         }
 
         #region public methods
@@ -169,7 +168,7 @@ namespace Utilities
                 // the unique identifier which represents an output on this node
                 // and 'assigns' that variable the expression that you create.
                 
-                // For the first node, return an index of the input
+                // For the first node, return the selected item
                 
                 AstFactory.BuildAssignment(
                 GetAstIdentifierForOutputIndex(0),
@@ -177,17 +176,10 @@ namespace Utilities
                    ? CreateASTForCollection((IEnumerable) item)
                    : AstFactory.BuildPrimitiveNodeFromObject(item)),
 
-                //AstFactory.BuildAssignment(
-                //    GetAstIdentifierForOutputIndex(0),
-                //    AstFactory.BuildPrimitiveNodeFromObject(Items[Index].Item)),
-
+                // For the second node, return the selected index
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(1),
                     AstFactory.BuildIntNode(Index))//,
-
-                //AstFactory.BuildAssignment(
-                //GetAstIdentifierForOutputIndex(2),
-                //AstFactory.BuildStringNode(inputAstNodes[0].ToString()))
 
             };
         }
@@ -256,10 +248,9 @@ namespace Utilities
                             {
                                 foreach (var data in listMirror.GetData().GetElements())
                                 {
-                                    var dataString = index.ToString() + ": " +
-                                                     data.GetElements()[0].Data.ToString() +
-                                                     " (" + data.GetElements().ToString() +")";
-                                    var classtype = data.GetElements().ToList().GetType().ToString();
+                                    var dataString = index + ": " +
+                                                     data.GetElements()[0].Data +
+                                                     " (" + data.GetElements() +")";
                                     var obj = data.GetElements().ToList();
                                     model.Items.Add(new DynamoDropDownItem(dataString, obj));
                                     index++;
@@ -269,7 +260,7 @@ namespace Utilities
                             {
                                 foreach (var data in listMirror.GetData().GetElements())
                                 {
-                                    var dataString = index.ToString() + ": " + data.Data.ToString() + " (" +
+                                    var dataString = index + ": " + data.Data + " (" +
                                                      data.Data.GetType().ToString().Remove(0, 7) + ")";
                                     model.Items.Add(new DynamoDropDownItem(dataString, data.Data));
                                     index++;
@@ -279,7 +270,7 @@ namespace Utilities
                         else
                         {
                             var data = listMirror.GetData().Data;
-                            var dataString = index.ToString() + ':' + data.ToString();
+                            var dataString = index.ToString() + ':' + data;
                             model.Items.Add(new DynamoDropDownItem(dataString, data));
                         }
                     }
@@ -289,8 +280,8 @@ namespace Utilities
 
                     if (isFirstSet)
                     {
-                        if (dropdownControl.Box.Items.Count > model.tempIndex)
-                            dropdownControl.Box.SelectedIndex = model.tempIndex;
+                        if (dropdownControl.Box.Items.Count > model.TempIndex)
+                            dropdownControl.Box.SelectedIndex = model.TempIndex;
                         isFirstSet = false;
                     }
 

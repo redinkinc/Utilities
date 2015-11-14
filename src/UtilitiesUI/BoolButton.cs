@@ -100,7 +100,6 @@ namespace Utilities
         {
             if (e.PropertyName != "IsUpdated")
                 return;
-
             OnRequestChangeBoolButton(this, EventArgs.Empty);
         }
 

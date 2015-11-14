@@ -21,9 +21,15 @@
  *  along with Utilities. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using ProtoCore.AST.AssociativeAST;
 
 namespace Utilities
 {
@@ -34,21 +40,23 @@ namespace Utilities
     {
         public double CanvasWidth { get; private set; }
 
-        private Polyline _pl;
-
         private static readonly SolidColorBrush BgrColorBrush = new SolidColorBrush() { Color = Color.FromArgb(255, 229, 227, 223) };
 
         public ParallelCoordinates Model { get; set; }
-        public SolidColorBrush PlotColor { get; set; }
-        public string PlotColorName { get; set; }
+        public Color StartColor { get; set; }
+        public string StartColorName { get; set; }
+        public Color StopColor { get; set; }
+        public string StopColorName { get; set; }
         public int CoordinateDistance { get; set; }
 
         public ParallelCoordinatesControl(ParallelCoordinates model)
         {
             InitializeComponent();
             Model = model;
-            PlotColor = new SolidColorBrush() { Color = Color.FromArgb(255, 0, 0, 255) };
-            PlotColorName = "Blue";
+            StartColor = Colors.Blue;
+            StartColorName = "Blue";
+            StopColor = Colors.Green;
+            StopColorName = "Green";
             CoordinateDistance = 30;
         }
 
@@ -66,7 +74,34 @@ namespace Utilities
 
         private void DrawPlot()
         {
-            
+            HeaderPanel.Children.Clear();
+            foreach (var maxValue in Model.MaxValues)
+            {
+                HeaderPanel.Children.Add( new TextBox()
+                {
+                    Text = Math.Round(maxValue).ToString(CultureInfo.InvariantCulture),
+                    Width = CoordinateDistance,
+                    Margin = new Thickness(5, 0, 5, 0),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Padding = new Thickness(2)
+                 });
+            }
+
+            FooterPanel.Children.Clear();
+            foreach (var minValue in Model.MinValues)
+            {
+                FooterPanel.Children.Add(new TextBox()
+                {
+                    Text = Math.Round(minValue).ToString(CultureInfo.InvariantCulture),
+                    Width = CoordinateDistance,
+                    Margin = new Thickness(5, 0, 5, 0),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Padding = new Thickness(2)
+
+                });
+
+            }
+
             var numOfCoordinates = Model.ParameterNames.Count;
             CanvasWidth = CoordinateDistance*(numOfCoordinates-1);
             PlotCanvas.Width = CanvasWidth;
@@ -79,41 +114,40 @@ namespace Utilities
                 PlotCanvas.Children.Add(pl);
             }
 
-            if (Model.Values.Count < 2)
+            var numOfValues = Model.Values.Count;
+
+            for (var index = 0; index < numOfValues; index++)
             {
-                _pl = new Polyline { Stroke = PlotColor };
+                var pl = new Polyline
+                {
+                    Stroke = new SolidColorBrush(GetRelativeColor(index, numOfValues))
+                };
 
                 for (var i = 0; i < numOfCoordinates; i++)
                 {
-                    _pl.Points.Add(new Point(i * CoordinateDistance, 0.5 * PlotCanvas.Height));
+                    double x = i*CoordinateDistance;
+                    var y = Model.Values[index][i];
+                    pl.Points.Add(ScaledCurvePoint(x, y, Model.MinValues[i], Model.MaxValues[i]));
                 }
-            }
-            else
-            {
 
-                foreach (var value in Model.Values)
-                {
-                    _pl = new Polyline {Stroke = PlotColor};
-
-                    for (var i = 0; i < numOfCoordinates; i++)
-                    {
-                        double x = i*CoordinateDistance;
-                        var y = value[i];
-                        _pl.Points.Add(ScaledCurvePoint(x, y, Model.MinValues[i], Model.MaxValues[i]));
-                    }
-
-                    PlotCanvas.Children.Add(_pl);
-                }
+                PlotCanvas.Children.Add(pl);
             }
         }
 
         private Point ScaledCurvePoint(double x, double y, double min, double max)
         {
-            var scaledPoint = new Point
+            var scaledPoint = new Point();
+            if ( Equals(min, max) )
             {
-                X = x,
-                Y = PlotCanvas.ActualHeight - (y - min) * PlotCanvas.ActualHeight / (max - min)
-            };
+                scaledPoint.X = x;
+                scaledPoint.Y = PlotCanvas.ActualHeight/2;
+            }
+            else
+            {
+                scaledPoint.X = x;
+                scaledPoint.Y = PlotCanvas.ActualHeight - (y - min)*PlotCanvas.ActualHeight/(max - min);
+            }
+
             return scaledPoint;
         }
 
@@ -125,10 +159,22 @@ namespace Utilities
         private void ParallelCoordinateSettings_OnClick(object sender, RoutedEventArgs e)
         {
             var settingsWindow = new Window { Content = new PCsettings(this) };
-            settingsWindow.Height = 200;
+            settingsWindow.Height = 250;
             settingsWindow.Width = 200;
             settingsWindow.WindowStyle = WindowStyle.None;
             settingsWindow.Show();
+        }
+
+        public Color GetRelativeColor(int i, int n)
+        {
+            if (n > 1) n -= 1;
+            var div = (double) i / (double) n;
+            var a = Convert.ToByte(StartColor.A - (StartColor.A - StopColor.A) * div);
+            var r = Convert.ToByte(StartColor.R - (StartColor.R - StopColor.R) * div);
+            var g = Convert.ToByte(StartColor.G - (StartColor.G - StopColor.G) * div);
+            var b = Convert.ToByte(StartColor.B - (StartColor.B - StopColor.B) * div);
+
+            return Color.FromArgb( a, r, g, b);
         }
     }
 }

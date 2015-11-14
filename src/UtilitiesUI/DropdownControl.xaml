@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="210">
     <StackPanel Name="CustomUIGrid">
-        <ComboBox Name="Box" ItemsSource="{Binding}" SelectionChanged="ComboBox_SelectionChanged" Width="200" SelectedItem="{}"/>
+        <ComboBox Name="Box" ItemsSource="{Binding}" SelectionChanged="ComboBox_SelectionChanged" Width="Auto" SelectedItem="{}"/>
         <WrapPanel Margin="5" HorizontalAlignment="Center">
             <Button Name="btnPrevious" Click="btnPrevious_Click" Width="95" HorizontalAlignment="Left">Previous</Button>
             <Button Name="btnNext" Click="btnNext_Click" Margin="5,0" Width="95" HorizontalAlignment="Right">Next</Button>

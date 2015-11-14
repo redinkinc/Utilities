@@ -58,12 +58,12 @@ namespace Utilities
             Watch2DControlModel.PlotColorName = GetColorName(myColor);
         }
 
-        public static string GetColorName(System.Windows.Media.Color color)
+        public static string GetColorName(Color color)
         {
-            Type colors = typeof(System.Windows.Media.Colors);
+            Type colors = typeof(Colors);
             foreach (var prop in colors.GetProperties())
             {
-                if (((System.Windows.Media.Color)prop.GetValue(null, null)) == color)
+                if (((Color)prop.GetValue(null, null)) == color)
                     return prop.Name;
             }
 
@@ -75,6 +75,11 @@ namespace Utilities
             Watch2DControlModel.AddChart();
             Window parentWindow = Window.GetWindow(this);
             parentWindow.Close();
+        }
+
+        private void YMax_OnSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

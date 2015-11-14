@@ -25,6 +25,7 @@ using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace Utilities
@@ -32,32 +33,44 @@ namespace Utilities
     /// <summary>
     /// Interaction logic for PCsettings.xaml
     /// </summary>
-    public partial class PCsettings : UserControl
+    public partial class PCsettings
     {
         private ParallelCoordinatesControl ParallelCoordinatesControlModel { get; set; }
         public PCsettings(ParallelCoordinatesControl pcControl)
         {
             InitializeComponent();
             ParallelCoordinatesControlModel = pcControl;
-            PlotColorBox.ItemsSource = typeof(Colors).GetProperties();
-            PlotColorBox.SelectedItem = typeof(Colors).GetProperty(pcControl.PlotColorName);
+            StartColorBox.ItemsSource = typeof(Colors).GetProperties();
+            StartColorBox.SelectedItem = typeof(Colors).GetProperty(pcControl.StartColorName);
+            StopColorBox.ItemsSource = typeof(Colors).GetProperties();
+            StopColorBox.SelectedItem = typeof(Colors).GetProperty(pcControl.StopColorName);
         }
 
-        private void PlotColorBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void StartColorBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var propertyInfo = PlotColorBox.SelectedItem as PropertyInfo;
+            var propertyInfo = StartColorBox.SelectedItem as PropertyInfo;
             if (propertyInfo == null) return;
             var myColor = (Color)propertyInfo.GetValue(null, null);
-            ParallelCoordinatesControlModel.PlotColor = new SolidColorBrush(myColor);
-            ParallelCoordinatesControlModel.PlotColorName = GetColorName(myColor);
+            ParallelCoordinatesControlModel.StartColor = myColor;
+            ParallelCoordinatesControlModel.StartColorName = GetColorName(myColor);
         }
 
-        public static string GetColorName(System.Windows.Media.Color color)
+        private void StopColorBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Type colors = typeof(System.Windows.Media.Colors);
-            foreach (var prop in colors.GetProperties())
+            var propertyInfo = StopColorBox.SelectedItem as PropertyInfo;
+            if (propertyInfo == null) return;
+            var myColor = (Color)propertyInfo.GetValue(null, null);
+            ParallelCoordinatesControlModel.StopColor = myColor;
+            ParallelCoordinatesControlModel.StopColorName = GetColorName(myColor);
+        }
+
+        public static string GetColorName(Color color)
+        {
+            var colors = typeof(Colors);
+            for (int index = 0; index < colors.GetProperties().Length; index++)
             {
-                if (((System.Windows.Media.Color)prop.GetValue(null, null)) == color)
+                var prop = colors.GetProperties()[index];
+                if (((Color) prop.GetValue(null, null)) == color)
                     return prop.Name;
             }
 
@@ -67,14 +80,18 @@ namespace Utilities
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
             ParallelCoordinatesControlModel.AddChart();
-            Window parentWindow = Window.GetWindow(this);
-            parentWindow.Close();
+            var parentWindow = Window.GetWindow(this);
+            parentWindow?.Close();
         }
 
-        //private void headerThumb_DragDelta(object sender, DragDeltaEventArgs e)
-        //{
-        //    Left = Left + e.HorizontalChange;
-        //    Top = Top + e.VerticalChange;
-        //}
+        private void headerThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this);
+            if (parentWindow == null) return;
+            parentWindow.Left += e.HorizontalChange;
+            parentWindow.Top += e.VerticalChange;
+        }
+
+        
     }
 }

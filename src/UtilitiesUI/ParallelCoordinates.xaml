@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
+    <StackPanel Name="StackPanel">
+        <StackPanel Name="HeaderPanel" Orientation="Horizontal" Height="20" />
         <Viewbox Stretch="Fill">
             <Border>
-                <Canvas Background="#e5e3df"  Name="PlotCanvas" Height="200" ClipToBounds="True"/>
+                <Canvas Background="#e5e3df"  Name="PlotCanvas" Height="200" Margin="10 0" ClipToBounds="True"/>
             </Border>
         </Viewbox>
+        <StackPanel Name="FooterPanel" Orientation="Horizontal" Height="20" Width="Auto"/>
         <WrapPanel>
             <Button Name="ResetButton" Margin="10" Width="120" Click="ResetButton_OnClick_OnClick">Reset!</Button>
             <Button Name="ParallelCoordinateSettings" Margin="10" Width="20" Click="ParallelCoordinateSettings_OnClick" >*</Button>

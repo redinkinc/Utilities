@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Utilities.Watch2D3LinesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+    <Viewbox Stretch="Fill">
+        <Border>
+            <Canvas Background="#e5e3df"  Name="PlotCanvas" Width="250" Height="200" ClipToBounds="True"/>
+        </Border>
+    </Viewbox>
+    <WrapPanel HorizontalAlignment="Stretch">
+            <ComboBox Name="CanvasType" SelectionChanged="CanvasType_OnSelectionChanged" Margin="10" Width="120">
+                <ComboBoxItem IsSelected="True">Plot</ComboBoxItem>
+                <ComboBoxItem>Histogram</ComboBoxItem>
+            </ComboBox>
+            <Button Name="Watch2D3Linessettings" Margin="10" Width="20" Click="Watch2Dsettings_OnClick">*</Button>
+        </WrapPanel>
+    </StackPanel>
+</UserControl>

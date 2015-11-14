@@ -86,6 +86,10 @@
     <Compile Include="PCsettings.xaml.cs">
       <DependentUpon>PCsettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Watch2D3Lines.cs" />
+    <Compile Include="Watch2d3LinesControl.xaml.cs">
+      <DependentUpon>Watch2d3LinesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Watch2dControl.xaml.cs">
       <DependentUpon>Watch2dControl.xaml</DependentUpon>
     </Compile>
@@ -102,6 +106,9 @@
     </Compile>
     <Compile Include="Watch2D.cs" />
     <Compile Include="Dropdown.cs" />
+    <Compile Include="Watch2D3LinesSettings.xaml.cs">
+      <DependentUpon>Watch2D3LinesSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Watch2Dsettings.xaml.cs">
       <DependentUpon>Watch2Dsettings.xaml</DependentUpon>
     </Compile>
@@ -123,9 +130,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Watch2d3LinesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Watch2dControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Watch2D3LinesSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Watch2Dsettings.xaml">
       <SubType>Designer</SubType>

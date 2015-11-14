@@ -1,14 +1,34 @@
-﻿<UserControl x:Class="Utilities.Watch2Dsettings"
+﻿<UserControl x:Class="Utilities.Watch2D3LinesSettings"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="150" Width="150">
+             d:DesignHeight="220" Width="150">
     <StackPanel>
         <TextBlock Margin="10 0">PlotColor:</TextBlock>
         <WrapPanel>
-            <ComboBox Name="PlotColorBox" SelectionChanged="PlotColorBox_OnSelectionChanged" Margin="10" Width="130">
+            <ComboBox Name="PlotColorBox1" SelectionChanged="PlotColorBox1_OnSelectionChanged" Margin="10" Width="130">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox Name="PlotColorBox2" SelectionChanged="PlotColorBox2_OnSelectionChanged" Margin="10" Width="130">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox Name="PlotColorBox3" SelectionChanged="PlotColorBox3_OnSelectionChanged" Margin="10" Width="130">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

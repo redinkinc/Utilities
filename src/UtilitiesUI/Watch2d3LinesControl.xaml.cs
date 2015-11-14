@@ -20,7 +20,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Utilities. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -31,31 +32,31 @@ using System.Windows.Shapes;
 
 namespace Utilities
 {
-    public partial class Watch2DControl
+    public partial class Watch2D3LinesControl
     {
         private double xmin = 0;
         private double _xmax;
         private double ymin = 0;
         private double _ymax;
 
-        private Watch2D _watch2D;
+        private Watch2D3Lines _watch2D3L;
 
         private Polyline _pl;
 
-        private static SolidColorBrush _bgrColorBrush = new SolidColorBrush() { Color = Color.FromArgb(255,229,227,223) };
+        private static SolidColorBrush _bgrColorBrush = new SolidColorBrush() { Color = Color.FromArgb(255, 229, 227, 223) };
 
-        public SolidColorBrush PlotColor { get; set; }
-        public string PlotColorName { get; set; }
-        public List<double> Values { get; set; }
+        public List<SolidColorBrush> PlotColorBrushes { get; set; } = new List<SolidColorBrush> { new SolidColorBrush { Color = Color.FromArgb(255, 255, 0, 0) },
+            new SolidColorBrush { Color = Color.FromArgb(255, 0, 255, 0) }, new SolidColorBrush { Color = Color.FromArgb(255, 0, 0, 255) } };
+        public List<string> PlotColorName { get; set; }
+        public List<List<double>> Values { get; set; }
         public int SelectedType { get; set; }
 
-        public Watch2DControl(Watch2D model)
+        public Watch2D3LinesControl(Watch2D3Lines model)
         {
             InitializeComponent();
-            _watch2D = model;
-            Values = new List<double>();
-            PlotColor = new SolidColorBrush() { Color = Color.FromArgb(255, 0, 0, 0) };
-            PlotColorName = "Black";
+            _watch2D3L = model;
+            Values = new List<List<double>>();
+            PlotColorName = new List<string> { "Red", "Green", "Blue" };
             _ymax = 250;
         }
 
@@ -78,25 +79,32 @@ namespace Utilities
         {
             var recWidth = PlotCanvas.Width/Values.Count;
 
-            // Create a SolidColorBrush with a red color to fill the 
-            // Ellipse with.
+            var max = Values[0][0];
+            max = Values.Select(value => value.Max()).Concat(new[] {max}).Max();
 
-            var max = Values.Max();
-            var scale = PlotCanvas.Height/max; 
+            var scale = PlotCanvas.Height/max;
 
-            // middle points
-            for (int i = 0; i < Values.Count; i++)
+            foreach (var value in Values)
             {
-                var rectangle = new Rectangle { Fill = PlotColor, StrokeThickness = 5, Stroke = _bgrColorBrush };
-                rectangle.MouseLeftButtonUp += rectangle_MouseLeftButtonUp;
-                rectangle.Width = recWidth;
-                rectangle.Height = Values[i] * scale;
-                rectangle.Name = "rec" + i;
 
-                PlotCanvas.Children.Add(rectangle);
+                for (int i = 0; i < value.Count; i++)
+                {
+                    var rectangle = new Rectangle
+                    {
+                        Fill = PlotColorBrushes[Values.IndexOf(value)],
+                        StrokeThickness = 5,
+                        Stroke = _bgrColorBrush
+                    };
+                    rectangle.MouseLeftButtonUp += rectangle_MouseLeftButtonUp;
+                    rectangle.Width = recWidth;
+                    rectangle.Height = value[i]*scale;
+                    rectangle.Name = "rec" + i;
 
-                Canvas.SetLeft(rectangle, recWidth*i);
-                Canvas.SetTop(rectangle, (_ymax - Values[i]) *scale);
+                    PlotCanvas.Children.Add(rectangle);
+
+                    Canvas.SetLeft(rectangle, recWidth*i);
+                    Canvas.SetTop(rectangle, (_ymax - value[i])*scale);
+                }
             }
         }
 
@@ -107,21 +115,24 @@ namespace Utilities
 
         private void DrawPlot()
         {
-            _pl = new Polyline {Stroke = PlotColor};
-
-            _xmax = Values.Count - 1;
-            
-            _ymax = Values.Max();
-
-            for (int i = 0; i <= _xmax; i++)
+            foreach (var value in Values)
             {
-                double x = i;
-                var y = Values[i];
-                _pl.Points.Add(CurvePoint(
-                    new Point(x, y)));
-            }
+                _pl = new Polyline {Stroke = PlotColorBrushes[Values.IndexOf(value)]};
 
-            PlotCanvas.Children.Add(_pl);
+                _xmax = value.Count - 1;
+
+                _ymax = value.Max();
+
+                for (int i = 0; i <= _xmax; i++)
+                {
+                    double x = i;
+                    var y = value[i];
+                    _pl.Points.Add(CurvePoint(
+                        new Point(x, y)));
+                }
+
+                PlotCanvas.Children.Add(_pl);
+            }
         }
 
         private Point CurvePoint(Point pt)
@@ -134,6 +145,7 @@ namespace Utilities
             };
             return result;
         }
+
         private void CanvasType_OnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
             SelectedType = CanvasType.SelectedIndex;
@@ -143,7 +155,7 @@ namespace Utilities
         {
             var settingsWindow = new Window
             {
-                Content = new Watch2Dsettings(this),
+                Content = new Watch2D3LinesSettings(this),
                 Width = 200,
                 Height = 200,
                 WindowStyle = WindowStyle.None

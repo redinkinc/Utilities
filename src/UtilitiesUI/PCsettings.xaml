@@ -4,28 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="150">
+             d:DesignHeight="200" d:DesignWidth="150">
 
     <StackPanel>
-        <!--<Border
-        Name="headerBorder" 
+        <Border
+        Name="HeaderBorder" 
         Width="Auto" 
-        Height="50" 
+        Height="20" 
         VerticalAlignment="Top"
         DockPanel.Dock="Top" 
         BorderThickness="1,1,1,1">
             <Grid>
                 <Thumb 
-                x:Name="headerThumb" 
+                x:Name="HeaderThumb" 
                 Opacity="0" 
                 Background="{x:Null}" 
                 Foreground="{x:Null}" 
                 DragDelta="headerThumb_DragDelta"/>
             </Grid>
-        </Border>-->
-        <TextBlock Margin="10 0">PlotColor:</TextBlock>
+        </Border>
+        <TextBlock Margin="10 0">StartColor:</TextBlock>
         <WrapPanel>
-            <ComboBox Name="PlotColorBox" SelectionChanged="PlotColorBox_OnSelectionChanged" Margin="10" Width="130">
+            <ComboBox Name="StartColorBox" SelectionChanged="StartColorBox_OnSelectionChanged" Margin="10" Width="130">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </WrapPanel>
+        <TextBlock Margin="10 0">StopColor:</TextBlock>
+        <WrapPanel>
+            <ComboBox Name="StopColorBox" SelectionChanged="StopColorBox_OnSelectionChanged" Margin="10" Width="130">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
