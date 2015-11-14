@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="220" Width="150">
+             d:DesignHeight="300" Width="150">
     <StackPanel>
         <TextBlock Margin="10 0">PlotColor:</TextBlock>
         <WrapPanel>

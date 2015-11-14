@@ -157,7 +157,7 @@ namespace Utilities
             {
                 Content = new Watch2D3LinesSettings(this),
                 Width = 200,
-                Height = 200,
+                Height = 300,
                 WindowStyle = WindowStyle.None
             };
             settingsWindow.Show();
